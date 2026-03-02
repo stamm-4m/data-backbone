@@ -1,0 +1,336 @@
+/**********************************************************************
+ STAMM DATABASE
+ Industrial MLOps url_metadata for Soft Sensors
+**********************************************************************/
+
+/********************************************************************/
+-- 1. EXTENSIONS
+-- Uncomment if not already enabled on your server
+/********************************************************************/
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+
+/********************************************************************/
+-- 2. USERS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    full_name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT,
+    role TEXT CHECK (role IN ('admin','engineer','operator')) NOT NULL,
+    external_provider TEXT,
+    external_id TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 3. PROJECTS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS projects (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT,
+    created_by UUID REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 4. DATA PRODUCERS (e.g. bioreactors)
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS data_producers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT,
+    brand TEXT,
+    model TEXT,
+    version TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 5. EXPERIMENTS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS experiments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    project_id UUID REFERENCES projects(id),
+    data_producer_id UUID REFERENCES data_producers(id),
+    name TEXT NOT NULL,
+    description TEXT,
+    initial_conditions JSONB,
+    set_points JSONB,
+    start_time TIMESTAMPTZ,
+    end_time TIMESTAMPTZ,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 6. SENSORS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS sensors (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    experiment_id UUID REFERENCES experiments(id),
+    name TEXT NOT NULL,
+    unit TEXT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 7. ACTUATORS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS actuators (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    experiment_id UUID REFERENCES experiments(id),
+    name TEXT NOT NULL,
+    unit TEXT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 8. SENSOR READINGS (TIME SERIES)
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS sensor_readings (
+    time TIMESTAMPTZ NOT NULL,
+    sensor_id UUID REFERENCES sensors(id),
+    value DOUBLE PRECISION,
+    PRIMARY KEY (time, sensor_id)
+);
+
+-- SELECT create_hypertable('sensor_readings','time', if_not_exists => TRUE);
+
+
+/********************************************************************/
+-- 9. ACTUATOR STATES (TIME SERIES)
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS actuator_states (
+    time TIMESTAMPTZ NOT NULL,
+    actuator_id UUID REFERENCES actuators(id),
+    value DOUBLE PRECISION,
+    PRIMARY KEY (time, actuator_id)
+);
+
+-- SELECT create_hypertable('actuator_states','time', if_not_exists => TRUE);
+
+
+/********************************************************************/
+-- 10. ML MODELS (MODEL REGISTRY)
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS ml_models (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    version TEXT NOT NULL,
+    storage_endpoint TEXT NOT NULL,
+    url_metadata TEXT,
+    created_by UUID REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT now(),
+    UNIQUE(name, version)
+);
+
+
+/********************************************************************/
+-- 11. MODEL DEPLOYMENTS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS soft_sensor_deployments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    model_id UUID REFERENCES ml_models(id),
+    experiment_id UUID REFERENCES experiments(id),
+    deployed_at TIMESTAMP DEFAULT now(),
+    deployed_by UUID REFERENCES users(id),
+    status TEXT CHECK (status IN ('active','inactive','maintenance')) DEFAULT 'active'
+);
+
+
+/********************************************************************/
+-- 12. SOFT SENSOR PREDICTIONS (TIME SERIES)
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS soft_sensor_predictions (
+    time TIMESTAMPTZ NOT NULL,
+    deployment_id UUID REFERENCES soft_sensor_deployments(id),
+    value DOUBLE PRECISION,
+    PRIMARY KEY (time, deployment_id)
+);
+
+-- SELECT create_hypertable('soft_sensor_predictions','time', if_not_exists => TRUE);
+
+
+/********************************************************************/
+-- 13. MODEL RUN METRICS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS model_run_metrics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    deployment_id UUID REFERENCES soft_sensor_deployments(id),
+    run_by UUID REFERENCES users(id),
+    run_time TIMESTAMP DEFAULT now(),
+    latency_ms DOUBLE PRECISION,
+    metric_name TEXT,
+    metric_value DOUBLE PRECISION
+);
+
+
+/********************************************************************/
+-- 14. ALERT RULES
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS alert_rules (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    experiment_id UUID REFERENCES experiments(id),
+    name TEXT NOT NULL,
+    condition_expression TEXT NOT NULL,
+    message TEXT NOT NULL,
+    severity TEXT CHECK (severity IN ('info','warning','critical')),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 15. ALERT EVENTS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS alert_events (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    rule_id UUID REFERENCES alert_rules(id),
+    triggered_at TIMESTAMP DEFAULT now(),
+    message TEXT
+);
+
+
+/********************************************************************/
+-- 16. DATA TAG DEFINITIONS
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS data_tags (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT UNIQUE NOT NULL,
+    description TEXT,
+    severity TEXT CHECK (severity IN ('info','warning','critical')),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+/********************************************************************/
+-- 17. DATA POINT ANNOTATIONS
+-- Allows free-text comments and structured tags
+/********************************************************************/
+
+CREATE TABLE IF NOT EXISTS data_point_annotations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    source_type TEXT CHECK (source_type IN ('sensor','actuator','soft_sensor')) NOT NULL,
+    source_id UUID NOT NULL,
+    experiment_id UUID REFERENCES experiments(id),
+    data_time TIMESTAMPTZ NOT NULL,
+    tag_id UUID REFERENCES data_tags(id),
+    comment TEXT,
+    created_by UUID REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_annotations_lookup
+ON data_point_annotations (source_type, source_id, data_time);
+
+
+/********************************************************************/
+-- 18. EXAMPLE DATA
+/********************************************************************/
+
+INSERT INTO users (full_name,email,password_hash,role)
+VALUES ('Admin User','admin@stamm.ai','hashed_password','admin')
+ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO projects (name,description,created_by)
+SELECT 'Bioprocess Project','Demo project',id FROM users WHERE email='admin@stamm.ai'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO data_producers (name,description,brand,model,version)
+VALUES ('Bioreactor_01','Stirred tank reactor','Eppendorf','BioFlo 320','v1')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO experiments (project_id,data_producer_id,name)
+SELECT p.id,d.id,'Experiment_001'
+FROM projects p, data_producers d
+LIMIT 1;
+
+INSERT INTO sensors (experiment_id,name,unit)
+SELECT id,'pH','-' FROM experiments LIMIT 1;
+
+INSERT INTO actuators (experiment_id,name,unit)
+SELECT id,'Agitator','rpm' FROM experiments LIMIT 1;
+
+INSERT INTO ml_models (name,version,storage_endpoint,url_metadata,created_by)
+SELECT 'BiomassModel','1.0','http://model-registry/api/v1/models/biomass','sklearn',id
+FROM users WHERE email='admin@stamm.ai'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO soft_sensor_deployments (model_id,experiment_id,deployed_by)
+SELECT m.id,e.id,u.id
+FROM ml_models m, experiments e, users u
+WHERE u.email='admin@stamm.ai'
+LIMIT 1;
+
+
+/********************************************************************/
+-- 19. EXAMPLE TAGS
+/********************************************************************/
+
+INSERT INTO data_tags (name,description,severity)
+VALUES
+('negative_value','Value below physical threshold','warning'),
+('outlier','Statistical outlier detected','warning')
+ON CONFLICT (name) DO NOTHING;
+
+
+/********************************************************************/
+-- 20. EXAMPLE ANNOTATION (NEGATIVE SOFT SENSOR VALUE)
+/********************************************************************/
+
+INSERT INTO data_point_annotations (
+    source_type,
+    source_id,
+    experiment_id,
+    data_time,
+    tag_id,
+    comment,
+    created_by
+)
+SELECT
+    'soft_sensor',
+    d.id,
+    e.id,
+    now(),
+    t.id,
+    'Negative biomass prediction detected. Review calibration.',
+    u.id
+FROM soft_sensor_deployments d,
+     experiments e,
+     users u,
+     data_tags t
+WHERE u.email='admin@stamm.ai'
+AND t.name='negative_value'
+LIMIT 1;
+
+
+/**********************************************************************
+ END OF STAMM DATABASE SCRIPT
+**********************************************************************/
