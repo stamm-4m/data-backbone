@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS projects (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
     description TEXT,
-    created_by UUID REFERENCES users(id),
+    user_id UUID REFERENCES users(id),
     created_at TIMESTAMP DEFAULT now()
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS ml_models (
     version TEXT NOT NULL,
     storage_endpoint TEXT NOT NULL,
     url_metadata TEXT,
-    created_by UUID REFERENCES users(id),
+    user_id UUID REFERENCES users(id),
     created_at TIMESTAMP DEFAULT now(),
     UNIQUE(name, version)
 );
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS soft_sensor_predictions (
 CREATE TABLE IF NOT EXISTS model_run_metrics (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     deployment_id UUID REFERENCES soft_sensor_deployments(id),
-    run_by UUID REFERENCES users(id),
+    user_id UUID REFERENCES users(id),
     run_time TIMESTAMP DEFAULT now(),
     latency_ms DOUBLE PRECISION,
     metric_name TEXT,
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS data_point_annotations (
     data_time TIMESTAMPTZ NOT NULL,
     tag_id UUID REFERENCES data_tags(id),
     comment TEXT,
-    created_by UUID REFERENCES users(id),
+    user_id UUID REFERENCES users(id),
     created_at TIMESTAMP DEFAULT now()
 );
 
@@ -259,7 +259,7 @@ INSERT INTO users (full_name,email,password_hash,role)
 VALUES ('Admin User','admin@stamm.ai','hashed_password','admin')
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO projects (name,description,created_by)
+INSERT INTO projects (name,description,user_id)
 SELECT 'Bioprocess Project','Demo project',id FROM users WHERE email='admin@stamm.ai'
 ON CONFLICT DO NOTHING;
 
@@ -278,7 +278,7 @@ SELECT id,'pH','-' FROM experiments LIMIT 1;
 INSERT INTO actuators (experiment_id,name,unit)
 SELECT id,'Agitator','rpm' FROM experiments LIMIT 1;
 
-INSERT INTO ml_models (name,version,storage_endpoint,url_metadata,created_by)
+INSERT INTO ml_models (name,version,storage_endpoint,url_metadata,user_id)
 SELECT 'BiomassModel','1.0','http://model-registry/api/v1/models/biomass','sklearn',id
 FROM users WHERE email='admin@stamm.ai'
 ON CONFLICT DO NOTHING;
@@ -312,7 +312,7 @@ INSERT INTO data_point_annotations (
     data_time,
     tag_id,
     comment,
-    created_by
+    user_id
 )
 SELECT
     'soft_sensor',
