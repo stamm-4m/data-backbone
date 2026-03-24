@@ -66,6 +66,7 @@ CREATE TABLE public.users (
     external_provider text,
     external_id text,
     created_at timestamp without time zone DEFAULT now(),
+    is_active boolean DEFAULT true,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_email_key UNIQUE (email)
 );
