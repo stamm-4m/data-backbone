@@ -24,8 +24,8 @@ ALTER TABLE IF EXISTS public.annotations DROP CONSTRAINT IF EXISTS run_id;
 ALTER TABLE IF EXISTS public.project_dynamic_models DROP CONSTRAINT IF EXISTS "FK_project_dynamic_models_project_id";
 ALTER TABLE IF EXISTS public.project_dynamic_models DROP CONSTRAINT IF EXISTS "FK_project_dynamic_models_dynamic_model_id";
 ALTER TABLE IF EXISTS public.simulations DROP CONSTRAINT IF EXISTS dynamic_model_id;
-ALTER TABLE IF EXISTS public.role_premission DROP CONSTRAINT IF EXISTS fk_role_permission_role_id;
-ALTER TABLE IF EXISTS public.role_premission DROP CONSTRAINT IF EXISTS fk_role_permission_permission_id;
+ALTER TABLE IF EXISTS public.role_permission DROP CONSTRAINT IF EXISTS fk_role_permission_role_id;
+ALTER TABLE IF EXISTS public.role_permission DROP CONSTRAINT IF EXISTS fk_role_permission_permission_id;
 ALTER TABLE IF EXISTS public.laboratory_project DROP CONSTRAINT IF EXISTS "FK_laboratory_project_laboratory_id";
 ALTER TABLE IF EXISTS public.laboratory_project DROP CONSTRAINT IF EXISTS "FK_laboratory_project_project_id";
 ALTER TABLE IF EXISTS public.alerts DROP CONSTRAINT IF EXISTS "FK_alerts_experiment_id";
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS public.simulations CASCADE;
 DROP TABLE IF EXISTS public.roles CASCADE;
 DROP TABLE IF EXISTS public.permissions CASCADE;
 DROP TABLE IF EXISTS public.laboratories CASCADE;
-DROP TABLE IF EXISTS public.role_premission CASCADE;
+DROP TABLE IF EXISTS public.role_permission CASCADE;
 DROP TABLE IF EXISTS public.laboratory_project CASCADE;
 DROP TABLE IF EXISTS public.alerts CASCADE;
 
@@ -65,8 +65,8 @@ CREATE TABLE public.users (
     password_hash text,
     external_provider text,
     external_id text,
+	is_active bool,
     created_at timestamp without time zone DEFAULT now(),
-    is_active boolean DEFAULT true,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_email_key UNIQUE (email)
 );
@@ -189,9 +189,12 @@ CREATE TABLE public.soft_sensor_metrics (
 );
 
 CREATE TABLE public.user_role (
+	id uuid DEFAULT uuid_generate_v4(),
     user_id uuid,
     role_id uuid,
-    laboratory_id uuid
+    laboratory_id uuid,
+	created_at timestamp,
+	updated_at timestamp
 );
 
 CREATE TABLE public.annotations (
@@ -231,6 +234,7 @@ CREATE TABLE public.simulations (
 CREATE TABLE public.roles (
     id uuid DEFAULT uuid_generate_v4(),
     name text,
+	description text,
     PRIMARY KEY (id)
 );
 
@@ -248,10 +252,11 @@ CREATE TABLE public.laboratories (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE public.role_premission (
+CREATE TABLE public.role_permission (
+	id uuid DEFAULT uuid_generate_v4(),
     role_id uuid,
     permission_id uuid,
-    PRIMARY KEY (role_id, permission_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE public.laboratory_project (
@@ -358,10 +363,10 @@ ALTER TABLE public.project_dynamic_models ADD CONSTRAINT "FK_project_dynamic_mod
 ALTER TABLE public.simulations ADD CONSTRAINT dynamic_model_id
     FOREIGN KEY (dynamic_model_id) REFERENCES public.dynamic_model(id) NOT VALID;
 
-ALTER TABLE public.role_premission ADD CONSTRAINT fk_role_permission_role_id
+ALTER TABLE public.role_permission ADD CONSTRAINT fk_role_permission_role_id
     FOREIGN KEY (role_id) REFERENCES public.roles(id) NOT VALID;
 
-ALTER TABLE public.role_premission ADD CONSTRAINT fk_role_permission_permission_id
+ALTER TABLE public.role_permission ADD CONSTRAINT fk_role_permission_permission_id
     FOREIGN KEY (permission_id) REFERENCES public.permissions(id) NOT VALID;
 
 ALTER TABLE public.laboratory_project ADD CONSTRAINT "FK_laboratory_project_laboratory_id"
