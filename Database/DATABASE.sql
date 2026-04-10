@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS public.soft_sensors
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     path_metadata text NOT NULL,
     path_model text NOT NULL,
-    CONSTRAINT ml_models_pkey PRIMARY KEY (id),
+    CONSTRAINT ml_soft_pkey PRIMARY KEY (id),
     CONSTRAINT ml_models_name_version_key UNIQUE (path_metadata, path_model)
 );
 
