@@ -1,5 +1,13 @@
 BEGIN;
 
+DROP SCHEMA IF EXISTS public CASCADE;
+CREATE SCHEMA public;
+
+SET search_path TO public;
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+
 -- Extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS timescaledb;
