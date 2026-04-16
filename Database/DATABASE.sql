@@ -512,19 +512,19 @@ ALTER TABLE public.experiments_equipments
 
 ALTER TABLE IF EXISTS public.organizations_departments
     ADD CONSTRAINT "FK_organizations_departments_id_organizations" 
-    FOREIGN KEY (id_organizations) REFERENCES public.organizations (id) ON DELETE CASCADE;
+    FOREIGN KEY (organization_id) REFERENCES public.organizations (id) ON DELETE CASCADE;
 
 ALTER TABLE IF EXISTS public.organizations_departments
     ADD CONSTRAINT "FK_organizations_departments_id_departments" 
-    FOREIGN KEY (id_departments) REFERENCES public.departments (id) ON DELETE CASCADE;
+    FOREIGN KEY (department_id) REFERENCES public.departments (id) ON DELETE CASCADE;
 
 ALTER TABLE IF EXISTS public.departments_users
     ADD CONSTRAINT "FK_departments_users_id_department" 
-    FOREIGN KEY (id_department) REFERENCES public.departments (id) ON DELETE CASCADE;
+    FOREIGN KEY (department_id) REFERENCES public.departments (id) ON DELETE CASCADE;
 
 ALTER TABLE IF EXISTS public.departments_users
     ADD CONSTRAINT "FK_departments_users_id_user"
-    FOREIGN KEY (id_user) REFERENCES public.users (id) ON DELETE CASCADE;
+    FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE;
 
 -- Hypertables
 SELECT public.create_hypertable('sensor_readings', 'time', if_not_exists => TRUE);
