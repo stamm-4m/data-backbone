@@ -325,6 +325,40 @@ CREATE TABLE IF NOT EXISTS public.experiments_equipments
     CONSTRAINT uq_experiments_equipments UNIQUE (experiment_id, equipment_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.organizations
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    name text NOT NULL,
+    created_at date,
+    location text,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.departments
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    name text NOT NULL,
+    created_at date,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.organizations_departments
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    organization_id uuid,
+    department_id uuid,
+    PRIMARY KEY (id, organization_id, department_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.departments_users
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    department_id uuid,
+    user_id uuid,
+    PRIMARY KEY (id, department_id, user_id)
+);
+
+
 -- equipment_components
 ALTER TABLE public.equipment_components
     ADD CONSTRAINT fk_equipment_components_actuator
