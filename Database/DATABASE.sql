@@ -329,7 +329,7 @@ CREATE TABLE IF NOT EXISTS public.organizations
 (
     id uuid DEFAULT uuid_generate_v4(),
     name text NOT NULL,
-    created_at date,
+    created_at timestamp without time zone DEFAULT now(),
     location text,
     PRIMARY KEY (id)
 );
@@ -338,7 +338,7 @@ CREATE TABLE IF NOT EXISTS public.departments
 (
     id uuid DEFAULT uuid_generate_v4(),
     name text NOT NULL,
-    created_at date,
+    created_at timestamp without time zone DEFAULT now(),
     PRIMARY KEY (id)
 );
 
@@ -347,7 +347,8 @@ CREATE TABLE IF NOT EXISTS public.organizations_departments
     id uuid DEFAULT uuid_generate_v4(),
     organization_id uuid,
     department_id uuid,
-    PRIMARY KEY (id, organization_id, department_id)
+    PRIMARY KEY (id)
+    UNIQUE (organization_id, department_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.departments_users
