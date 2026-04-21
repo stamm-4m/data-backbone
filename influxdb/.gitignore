@@ -1,0 +1,12 @@
+# Never commit real secrets or tokens
+.env
+secrets/
+*.token
+
+# InfluxDB volumes (persisted data/config in Docker)
+influxdb-data/
+influxdb-config/
+
+# Logs or temp
+*.log
+*.tmp

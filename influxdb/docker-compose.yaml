@@ -1,0 +1,59 @@
+# ---------------------------------------------------------------------
+# This stack creates an InfluxDB 2.7 service and bootstraps 3 buckets + tokens.
+# It also creates a Docker network named `stamm_net` so other stacks
+# (e.g., Airflow) can attach to it.
+# ---------------------------------------------------------------------
+
+# --------------------------- InfluxDB services -----------------------
+services:
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    networks:
+      - stamm_net
+    env_file:
+      - ./.env
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_ADMIN_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_ADMIN_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: stamm_org
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BOOT_BUCKET}
+      DOCKER_INFLUXDB_INIT_RETENTION: ${BOOT_RETENTION}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8086/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+
+  influxdb-init:
+    image: influxdb:2.7
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    networks:
+      - stamm_net  
+    env_file:
+      - ./.env
+    command: ["/bin/sh","-lc","awk '{ sub(/\\r$/,\"\" ); print }' /opt/init/setup.sh > /tmp/setup.sh && chmod +x /tmp/setup.sh && /bin/sh /tmp/setup.sh"]
+    volumes:
+      - ./init/influx:/opt/init:ro
+      - ./secrets:/opt/secrets
+    restart: "no"
+
+# --------------------------- Networks & volumes -----------------------
+networks:
+  stamm_net:
+    name: stamm_net     
+    driver: bridge
+
+volumes:
+  influxdb-data:
+  influxdb-config:
