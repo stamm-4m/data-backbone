@@ -351,12 +351,20 @@ CREATE TABLE IF NOT EXISTS public.organizations_departments
     UNIQUE (organization_id, department_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.departments_users
+CREATE TABLE IF NOT EXISTS public.laboratory_user
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    id_laboratory uuid,
+    id_user uuid,
+    PRIMARY KEY (id, id_user, id_laboratory)
+);
+
+CREATE TABLE IF NOT EXISTS public.department_laboratory
 (
     id uuid DEFAULT uuid_generate_v4(),
     department_id uuid,
-    user_id uuid,
-    PRIMARY KEY (id, department_id, user_id)
+    laboratory_id uuid,
+    PRIMARY KEY (id)
 );
 
 
@@ -519,13 +527,21 @@ ALTER TABLE IF EXISTS public.organizations_departments
     ADD CONSTRAINT "FK_organizations_departments_id_departments" 
     FOREIGN KEY (department_id) REFERENCES public.departments (id) ON DELETE CASCADE;
 
-ALTER TABLE IF EXISTS public.departments_users
-    ADD CONSTRAINT "FK_departments_users_id_department" 
+ALTER TABLE IF EXISTS public.laboratory_user
+    ADD CONSTRAINT "FK_laboratories_users_id_laboratory" 
+    FOREIGN KEY (id_laboratory) REFERENCES public.laboratories (id) ON DELETE CASCADE;
+
+ALTER TABLE IF EXISTS public.laboratory_user
+    ADD CONSTRAINT "FK_laboratories_users_id_user" 
+    FOREIGN KEY (id_user) REFERENCES public.users (id) ON DELETE CASCADE;
+
+ALTER TABLE IF EXISTS public.department_laboratory
+    ADD CONSTRAINT "FK_department_laboratory_department_id" 
     FOREIGN KEY (department_id) REFERENCES public.departments (id) ON DELETE CASCADE;
 
-ALTER TABLE IF EXISTS public.departments_users
-    ADD CONSTRAINT "FK_departments_users_id_user"
-    FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE;
+ALTER TABLE IF EXISTS public.department_laboratory
+    ADD CONSTRAINT "FK_department_laboratory_laboratory_id" 
+    FOREIGN KEY (laboratory_id) REFERENCES public.laboratories (id) ON DELETE CASCADE;
 
 -- Hypertables
 SELECT public.create_hypertable('sensor_readings', 'time', if_not_exists => TRUE);
