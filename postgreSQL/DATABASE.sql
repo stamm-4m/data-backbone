@@ -65,6 +65,8 @@ DROP TABLE IF EXISTS public.simulations CASCADE;
 DROP TABLE IF EXISTS public.roles CASCADE;
 DROP TABLE IF EXISTS public.permissions CASCADE;
 DROP TABLE IF EXISTS public.laboratories CASCADE;
+DROP TABLE IF EXISTS public.laboratory_user CASCADE;
+DROP TABLE IF EXISTS public.department_laboratory CASCADE;
 DROP TABLE IF EXISTS public.role_permission CASCADE;
 DROP TABLE IF EXISTS public.laboratory_project CASCADE;
 DROP TABLE IF EXISTS public.alerts CASCADE;
@@ -354,9 +356,9 @@ CREATE TABLE IF NOT EXISTS public.organizations_departments
 CREATE TABLE IF NOT EXISTS public.laboratory_user
 (
     id uuid DEFAULT uuid_generate_v4(),
-    id_laboratory uuid,
-    id_user uuid,
-    PRIMARY KEY (id, id_user, id_laboratory)
+    laboratory_id uuid,
+    user_id uuid,
+    PRIMARY KEY (id, user_id, laboratory_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.department_laboratory
@@ -529,11 +531,11 @@ ALTER TABLE IF EXISTS public.organizations_departments
 
 ALTER TABLE IF EXISTS public.laboratory_user
     ADD CONSTRAINT "FK_laboratories_users_id_laboratory" 
-    FOREIGN KEY (id_laboratory) REFERENCES public.laboratories (id) ON DELETE CASCADE;
+    FOREIGN KEY (laboratory_id) REFERENCES public.laboratories (id) ON DELETE CASCADE;
 
 ALTER TABLE IF EXISTS public.laboratory_user
     ADD CONSTRAINT "FK_laboratories_users_id_user" 
-    FOREIGN KEY (id_user) REFERENCES public.users (id) ON DELETE CASCADE;
+    FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE;
 
 ALTER TABLE IF EXISTS public.department_laboratory
     ADD CONSTRAINT "FK_department_laboratory_department_id" 
