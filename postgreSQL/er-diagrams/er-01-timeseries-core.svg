@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1200" height="680" fill="#f8fafc"/>
+
+  <text x="600" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">
+    1. Time-series core — TimescaleDB hypertables
+  </text>
+  <text x="600" y="52" text-anchor="middle" font-size="12" fill="#475569">
+    High-frequency observations partitioned by time; linked to their defining entities and to runs.
+  </text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- ENTITY: sensors -->
+  <g transform="translate(60, 80)">
+    <rect width="220" height="160" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">sensors</text>
+    <line x1="0" y1="32" x2="220" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">unit TEXT</text>
+    <text x="12" y="112" font-size="12" fill="#0f172a">description TEXT</text>
+    <text x="12" y="132" font-size="12" fill="#0f172a">created_at TIMESTAMP</text>
+  </g>
+
+  <!-- ENTITY: actuators -->
+  <g transform="translate(340, 80)">
+    <rect width="220" height="160" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">actuators</text>
+    <line x1="0" y1="32" x2="220" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">unit TEXT</text>
+    <text x="12" y="112" font-size="12" fill="#0f172a">description TEXT</text>
+    <text x="12" y="132" font-size="12" fill="#0f172a">created_at TIMESTAMP</text>
+  </g>
+
+  <!-- ENTITY: soft_sensors -->
+  <g transform="translate(620, 80)">
+    <rect width="220" height="160" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">soft_sensors</text>
+    <line x1="0" y1="32" x2="220" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">path_metadata TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">path_model TEXT</text>
+    <text x="12" y="125" font-size="11" fill="#64748b">UNIQUE (path_metadata,</text>
+    <text x="12" y="140" font-size="11" fill="#64748b">path_model)</text>
+  </g>
+
+  <!-- ENTITY: runs -->
+  <g transform="translate(900, 80)">
+    <rect width="240" height="160" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L234,0 Q240,0 240,6 L240,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="120" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">runs</text>
+    <line x1="0" y1="32" x2="240" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">experiment_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">start_time TIMESTAMP</text>
+    <text x="12" y="112" font-size="12" fill="#0f172a">end_time TIMESTAMP</text>
+  </g>
+
+  <!-- ENTITY: sensor_readings (hypertable) -->
+  <g transform="translate(60, 390)">
+    <rect width="220" height="180" rx="6" fill="white" stroke="#c2410c" stroke-width="2"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#c2410c"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">sensor_readings</text>
+    <text x="110" y="46" text-anchor="middle" font-size="10" fill="#c2410c" font-weight="bold">⊘ hypertable</text>
+    <line x1="0" y1="54" x2="220" y2="54" stroke="#334155"/>
+    <text x="12" y="74" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">time</tspan> TIMESTAMPTZ  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="94" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">run_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="114" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">sensor_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="134" font-size="12" fill="#0f172a">value DOUBLE</text>
+    <text x="12" y="162" font-size="10" fill="#64748b">idx: (run_id, time↓, sensor_id)</text>
+  </g>
+
+  <!-- ENTITY: actuator_states (hypertable) -->
+  <g transform="translate(340, 390)">
+    <rect width="220" height="180" rx="6" fill="white" stroke="#c2410c" stroke-width="2"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#c2410c"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">actuator_states</text>
+    <text x="110" y="46" text-anchor="middle" font-size="10" fill="#c2410c" font-weight="bold">⊘ hypertable</text>
+    <line x1="0" y1="54" x2="220" y2="54" stroke="#334155"/>
+    <text x="12" y="74" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">time</tspan> TIMESTAMPTZ  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="94" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">run_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="114" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">actuator_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="134" font-size="12" fill="#0f172a">value DOUBLE</text>
+    <text x="12" y="162" font-size="10" fill="#64748b">idx: (run_id, time↓, actuator_id)</text>
+  </g>
+
+  <!-- ENTITY: predictions (hypertable) -->
+  <g transform="translate(620, 390)">
+    <rect width="220" height="180" rx="6" fill="white" stroke="#c2410c" stroke-width="2"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#c2410c"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">predictions</text>
+    <text x="110" y="46" text-anchor="middle" font-size="10" fill="#c2410c" font-weight="bold">⊘ hypertable</text>
+    <line x1="0" y1="54" x2="220" y2="54" stroke="#334155"/>
+    <text x="12" y="74" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">time</tspan> TIMESTAMPTZ  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="94" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">run_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="114" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">soft_sensor_id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan> <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="134" font-size="12" fill="#0f172a">value DOUBLE</text>
+    <text x="12" y="162" font-size="10" fill="#64748b">idx: (run_id, time↓, soft_sensor_id)</text>
+  </g>
+
+  <!-- CONNECTORS: parent PK → child FK -->
+  <!-- sensors → sensor_readings.sensor_id -->
+  <path d="M170,240 L170,500" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="175" y="370" font-size="10" fill="#334155">1..N</text>
+
+  <!-- actuators → actuator_states.actuator_id -->
+  <path d="M450,240 L450,500" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="455" y="370" font-size="10" fill="#334155">1..N</text>
+
+  <!-- soft_sensors → predictions.soft_sensor_id -->
+  <path d="M730,240 L730,500" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="735" y="370" font-size="10" fill="#334155">1..N</text>
+
+  <!-- runs → all 3 hypertables.run_id -->
+  <path d="M1020,240 C 1020,330 280,330 280,482" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1020,240 C 1020,320 560,330 560,482" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1020,240 C 1020,310 840,330 840,482" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Legend -->
+  <g transform="translate(60, 600)">
+    <rect width="1080" height="60" rx="4" fill="white" stroke="#cbd5e1"/>
+    <rect x="14" y="14" width="14" height="14" fill="#1e3a8a"/>
+    <text x="34" y="26" font-size="12" fill="#0f172a">Relational table</text>
+    <rect x="160" y="14" width="14" height="14" fill="#c2410c"/>
+    <text x="180" y="26" font-size="12" fill="#0f172a">TimescaleDB hypertable</text>
+    <text x="360" y="26" font-size="12" fill="#047857" font-weight="bold">PK</text>
+    <text x="388" y="26" font-size="12" fill="#0f172a">primary key</text>
+    <text x="500" y="26" font-size="12" fill="#b45309" font-weight="bold">FK</text>
+    <text x="528" y="26" font-size="12" fill="#0f172a">foreign key</text>
+    <text x="640" y="26" font-size="12" fill="#334155">→</text>
+    <text x="660" y="26" font-size="12" fill="#0f172a">references (1..N)</text>
+    <text x="14" y="48" font-size="11" fill="#64748b">All three hypertables share composite primary keys of (time, run_id, entity_id) and store a single floating-point value per row.</text>
+  </g>
+</svg>
