@@ -19,4 +19,4 @@ To make it easy for you to get started with GitLab, here's a list of recommended
 | Database   | Version | Status       | Notes                                           |
 | ---------- | ------- | -----------  | ----------------------------------------------- |
 | InfluxDB   | 2.7     | ✅ Supported | Used for time-series data storage and retrieval |
-| Postgresql (TimescaleDB) | 17/18      | 🚧 Ongoing work   | Check the folder PostgreSQL  |
+| Postgresql (TimescaleDB) | 17/18      | 🚧 Ongoing work   | Check the PostgreSQL folder  |
