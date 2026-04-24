@@ -1,3 +1,11 @@
+-- Resources table data added 2026-04-24
+INSERT INTO public.resources (id, name) VALUES ('10000000-0000-0000-0000-000000000001', 'Organization');
+INSERT INTO public.resources (id, name) VALUES ('20000000-0000-0000-0000-000000000002', 'Department');
+INSERT INTO public.resources (id, name) VALUES ('30000000-0000-0000-0000-000000000003', 'Laboratory');
+INSERT INTO public.resources (id, name) VALUES ('40000000-0000-0000-0000-000000000004', 'Project');
+INSERT INTO public.resources (id, name) VALUES ('50000000-0000-0000-0000-000000000005', 'Experiment');
+INSERT INTO public.resources (id, name) VALUES ('60000000-0000-0000-0000-000000000006', 'Model');
+INSERT INTO public.resources (id, name) VALUES ('70000000-0000-0000-0000-000000000007', 'User');
 --
 -- PostgreSQL database dump
 --
@@ -137,11 +145,36 @@ INSERT INTO public.laboratory_project (laboratory_id, project_id, id) VALUES ('6
 -- Data for Name: permissions; Type: TABLE DATA; Schema: public; Owner: stamm
 --
 
-INSERT INTO public.permissions (id, name, description) VALUES ('350bc802-befd-49fd-bb12-d4d0785e7c21', 'user.create', 'Create users');
-INSERT INTO public.permissions (id, name, description) VALUES ('a25a6b98-4f3e-4611-9910-8e160c9741d4', 'model:view', 'View models');
-INSERT INTO public.permissions (id, name, description) VALUES ('add33491-f292-4881-bc8f-92753f0835fe', 'user:delete', 'Delete users');
-INSERT INTO public.permissions (id, name, description) VALUES ('e3220895-e51d-427c-bc93-f2a480a7bdff', 'model:create', 'Create models');
-INSERT INTO public.permissions (id, name, description) VALUES ('260d5173-e7f7-48aa-9c6a-f0b1254a9d51', 'user:view', 'View users');
+-- New permissions added 2026-04-24
+-- Organization
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0001-4000-8000-000000000001', 'organization:write', 'Write organization data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0002-4000-8000-000000000002', 'organization:edit', 'Edit organization data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0003-4000-8000-000000000003', 'organization:read', 'Read organization data');
+-- Departments
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0004-4000-8000-000000000004', 'departments:write', 'Write department data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0005-4000-8000-000000000005', 'departments:edit', 'Edit department data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0006-4000-8000-000000000006', 'departments:read', 'Read department data');
+-- Laboratory
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0007-4000-8000-000000000007', 'laboratory:write', 'Write laboratory data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0008-4000-8000-000000000008', 'laboratory:edit', 'Edit laboratory data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0009-4000-8000-000000000009', 'laboratory:read', 'Read laboratory data');
+-- Project
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0010-4000-8000-000000000010', 'project:write', 'Write project data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0011-4000-8000-000000000011', 'project:edit', 'Edit project data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0012-4000-8000-000000000012', 'project:read', 'Read project data');
+-- Experiments
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0013-4000-8000-000000000013', 'experiments:write', 'Write experiments data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0014-4000-8000-000000000014', 'experiments:edit', 'Edit experiments data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0015-4000-8000-000000000015', 'experiments:read', 'Read experiments data');
+-- Models
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0016-4000-8000-000000000016', 'models:write', 'Write models data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0017-4000-8000-000000000017', 'models:edit', 'Edit models data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0018-4000-8000-000000000018', 'models:read', 'Read models data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0019-4000-8000-000000000019', 'models:deploy', 'Deploy models');
+-- Users
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0020-4000-8000-000000000020', 'users:write', 'Write users data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0021-4000-8000-000000000021', 'users:edit', 'Edit users data');
+INSERT INTO public.permissions (id, name, description) VALUES ('b1a1e1a0-0022-4000-8000-000000000022', 'users:read', 'Read users data');
 
 
 --
@@ -221,8 +254,11 @@ INSERT INTO public.refresh_tokens (id, user_id, token, expires_at, revoked) VALU
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: stamm
 --
 
-INSERT INTO public.roles (id, name, description) VALUES ('23ed8a1d-f372-42f9-ade4-23f18bb9b8c2', 'admin', 'Admin all system');
-INSERT INTO public.roles (id, name, description) VALUES ('0a8190e9-74b0-4f93-8db0-f8425ddec034', 'viewer', 'Only views');
+-- New roles added 2026-04-24
+INSERT INTO public.roles (id, name, description) VALUES ('11111111-1111-1111-1111-111111111111', 'super_admin', 'Super administrator with all permissions');
+INSERT INTO public.roles (id, name, description) VALUES ('22222222-2222-2222-2222-222222222222', 'admin', 'Administrator with management permissions');
+INSERT INTO public.roles (id, name, description) VALUES ('33333333-3333-3333-3333-333333333333', 'modeler', 'Modeler with permissions to create and manage models');
+INSERT INTO public.roles (id, name, description) VALUES ('44444444-4444-4444-4444-444444444444', 'operator', 'Operator with permissions to operate and view data');
 
 
 --
@@ -266,6 +302,8 @@ INSERT INTO public.role_permission (id, role_id, permission_id) VALUES ('426e64e
 --
 
 INSERT INTO public.user_role (user_id, role_id, laboratory_id, created_at, updated_at, id) VALUES ('424add51-e989-4af5-86bd-75a2cb461274', '23ed8a1d-f372-42f9-ade4-23f18bb9b8c2', 'b957d5c0-f6ae-4d4e-82f0-73ffaa199609', '2026-03-26 17:55:59.939526', NULL, '6c4f857e-587c-4cc5-8869-0a4d04d13234');
+
+
 
 
 -- Completed on 2026-04-10 17:53:55

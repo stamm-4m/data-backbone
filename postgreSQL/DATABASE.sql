@@ -233,12 +233,8 @@ CREATE TABLE IF NOT EXISTS public.user_role
 (
     user_id uuid NOT NULL,
     role_id uuid NOT NULL,
-    laboratory_id uuid NOT NULL,
-    created_at timestamp,
-    updated_at timestamp,
-    id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    CONSTRAINT user_role_pkey PRIMARY KEY (id),
-    CONSTRAINT uq_user_role UNIQUE (user_id, role_id, laboratory_id)
+    resource_type text,
+    real_resource_id uuid
 );
 
 CREATE TABLE IF NOT EXISTS public.roles
@@ -369,6 +365,17 @@ CREATE TABLE IF NOT EXISTS public.department_laboratory
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS public.resources
+(
+    id uuid DEFAULT uuid_generate_v4(),
+    name text,
+    PRIMARY KEY (id)
+);
+
+-- Foreign key constraints
+ALTER TABLE public.role_permission
+    ADD CONSTRAINT fk_role_permission_resource 
+    FOREIGN KEY (resource_id) REFERENCES public.resources (id) ON DELETE CASCADE;
 
 -- equipment_components
 ALTER TABLE public.equipment_components
