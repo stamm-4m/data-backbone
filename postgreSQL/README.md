@@ -131,26 +131,33 @@ Each hypertable has a dedicated composite index for efficient `run_id`-filtered,
 
 ---
 
-## 4. Entity–relationship diagram
+## 4. Entity–relationship diagrams
 
-Open `stamm_db.pgerd` in **pgAdmin 4** (*Tools → ERD Tool → Load from ERD file*) to browse the full ERD graphically.
+For full-fidelity browsing, open `stamm_db.pgerd` in **pgAdmin 4** (*Tools → ERD Tool → Load from ERD file*). The sub-schema is also documented here as four focused diagrams, one per functional group:
 
-Key relationships:
+### 4.1 Time-series core — TimescaleDB hypertables
 
-```
-projects ──< experiments ──< runs ──< sensor_readings     (hypertable)
-                                  ├── actuator_states    (hypertable)
-                                  └── predictions        (hypertable)
+![ER diagram — time-series core](./er-diagrams/er-01-timeseries-core.svg)
 
-experiments ──< experiments_equipments >── equipments ──< equipment_components >── sensors
-                                                                               └── actuators
+Three hypertables (`sensor_readings`, `actuator_states`, `predictions`) partitioned by `time`, each linked to `runs` and to its defining entity (`sensors`, `actuators`, `soft_sensors`).
 
-projects ──< project_soft_sensors >── soft_sensors ──< soft_sensor_metrics
-projects ──< project_dynamic_models >── dynamic_model ──< simulations
+### 4.2 Operational context — projects, experiments, runs, equipment
 
-laboratories ──< laboratory_project >── projects
-laboratories ──< laboratory_user >── users ──< user_role >── roles ──< role_permission >── permissions
-```
+![ER diagram — operational context](./er-diagrams/er-02-operational-context.svg)
+
+Scientific project hierarchy (`projects` → `experiments` → `runs`), the equipment composition (`equipments` → `equipment_components` → `sensors`/`actuators`), and the human-in-the-loop tables (`annotations`, `alerts`).
+
+### 4.3 Model registry — soft sensors, dynamic models
+
+![ER diagram — model registry](./er-diagrams/er-03-model-registry.svg)
+
+Projects own a portfolio of data-driven `soft_sensors` and `dynamic_model` entries; `soft_sensor_metrics` are scored per experiment and `simulations` store the outputs of dynamic-model runs.
+
+### 4.4 Access control and organisational hierarchy
+
+![ER diagram — access control](./er-diagrams/er-04-access-control.svg)
+
+RBAC (`users`, `roles`, `permissions`) plus the organisation hierarchy (`organizations` → `departments` → `laboratories`). Laboratories own users and projects; user-role assignments are scoped to a laboratory.
 
 ---
 
