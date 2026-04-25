@@ -1,8 +1,0 @@
-"id","full_name","email","password_hash","external_provider","external_id","created_at","is_active","phone"
-"02924cec-292a-4518-9943-f78da6b5b8b4","David Camilo Corrales Muñoz","David-Camilo.Corrales-Munoz@inrae.fr","$2b$12$mrpteS07rvJJWcmpMC3g/OTImBcULqW81ExBjGuGoCssehvRIC7ZS",NULL,NULL,"2026-03-25 22:36:39.806539",True,NULL
-"424add51-e989-4af5-86bd-75a2cb461274","Carlos Alberto Suarez Muñoz","carsuamz@gmail.com","$2b$12$mrpteS07rvJJWcmpMC3g/OTImBcULqW81ExBjGuGoCssehvRIC7ZS",NULL,NULL,"2026-03-25 22:36:39.806539",True,NULL
-"59032a02-eee5-4a26-a05e-88d9209477c9","Jairo Alexander Astudillo Lagos","jairo.astudillo-lagos@inrae.fr","473287f8298dba7163a897908958f7c0eae733e25d2e027992ea2edc9bed2fa8",NULL,NULL,"2026-04-17 07:55:46.600932",True,NULL
-"7cfbb7a6-9b58-4136-8dac-4ef7767b0cba","Brett Metcalfe","Brett.metcalfe@wur.nl","$2b$12$mrpteS07rvJJWcmpMC3g/OTImBcULqW81ExBjGuGoCssehvRIC7ZS",NULL,NULL,"2026-04-25 01:16:02.090652",True,NULL
-"9d16a568-9bbc-416f-9de7-53a8ae703443","Santiago Morales Aristizabal","sam2800ml@gmail.com","8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",NULL,NULL,"2026-04-22 20:11:54.609561",True,NULL
-"9e3c7f5a-0b9c-4e07-aefe-a7e6b18403f6","Ariane Bize","ariane.bize@inrae.fr","$2b$12$mrpteS07rvJJWcmpMC3g/OTImBcULqW81ExBjGuGoCssehvRIC7ZS",NULL,NULL,"2026-04-25 01:16:02.090652",True,NULL
-"ec300c7b-2250-4efa-b9d3-6a7fa7714ee7","Margaux Bonal","user@example.com","8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",NULL,NULL,"2026-03-21 02:27:53.425286",True,NULL
