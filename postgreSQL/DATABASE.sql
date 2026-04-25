@@ -267,6 +267,7 @@ CREATE TABLE IF NOT EXISTS public.users
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     full_name text NOT NULL,
     email text NOT NULL,
+    phone text,
     password_hash text,
     external_provider text,
     external_id text,
