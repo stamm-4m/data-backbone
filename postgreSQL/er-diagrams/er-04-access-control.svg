@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1340 860" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1340" height="860" fill="#f8fafc"/>
+
+  <text x="670" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">
+    4. Access control and organisational hierarchy
+  </text>
+  <text x="670" y="52" text-anchor="middle" font-size="12" fill="#475569">
+    Role-based access control plus the organisation → department → laboratory hierarchy that owns projects and users.
+  </text>
+
+  <defs>
+    <marker id="arrow4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- organizations -->
+  <g transform="translate(60, 90)">
+    <rect width="210" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L204,0 Q210,0 210,6 L210,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="105" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">organizations</text>
+    <line x1="0" y1="32" x2="210" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">description TEXT</text>
+  </g>
+
+  <!-- organizations_departments -->
+  <g transform="translate(330, 90)">
+    <rect width="230" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L224,0 Q230,0 230,6 L230,32 L0,32 Z" fill="#64748b"/>
+    <text x="115" y="21" text-anchor="middle" fill="white" font-size="12" font-weight="bold">organizations_departments</text>
+    <line x1="0" y1="32" x2="230" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">organization_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">department_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- departments -->
+  <g transform="translate(620, 90)">
+    <rect width="210" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L204,0 Q210,0 210,6 L210,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="105" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">departments</text>
+    <line x1="0" y1="32" x2="210" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">description TEXT</text>
+  </g>
+
+  <!-- department_laboratory -->
+  <g transform="translate(890, 90)">
+    <rect width="220" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#64748b"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="12" font-weight="bold">department_laboratory</text>
+    <line x1="0" y1="32" x2="220" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">department_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">laboratory_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- laboratories -->
+  <g transform="translate(1160, 90)">
+    <rect width="160" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L154,0 Q160,0 160,6 L160,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="80" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">laboratories</text>
+    <line x1="0" y1="32" x2="160" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">address TEXT</text>
+  </g>
+
+  <!-- laboratory_user -->
+  <g transform="translate(990, 300)">
+    <rect width="200" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L194,0 Q200,0 200,6 L200,32 L0,32 Z" fill="#64748b"/>
+    <text x="100" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">laboratory_user</text>
+    <line x1="0" y1="32" x2="200" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">laboratory_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">user_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- laboratory_project -->
+  <g transform="translate(1210, 300)">
+    <rect width="210" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L204,0 Q210,0 210,6 L210,32 L0,32 Z" fill="#64748b"/>
+    <text x="105" y="21" text-anchor="middle" fill="white" font-size="12" font-weight="bold">laboratory_project</text>
+    <line x1="0" y1="32" x2="210" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">laboratory_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">project_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- users -->
+  <g transform="translate(760, 470)">
+    <rect width="220" height="160" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L214,0 Q220,0 220,6 L220,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="110" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">users</text>
+    <line x1="0" y1="32" x2="220" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">username TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">email TEXT</text>
+    <text x="12" y="112" font-size="12" fill="#0f172a">password_hash TEXT</text>
+    <text x="12" y="132" font-size="12" fill="#0f172a">created_at TIMESTAMP</text>
+    <text x="12" y="152" font-size="12" fill="#0f172a">...</text>
+  </g>
+
+  <!-- user_role -->
+  <g transform="translate(460, 470)">
+    <rect width="230" height="130" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L224,0 Q230,0 230,6 L230,32 L0,32 Z" fill="#64748b"/>
+    <text x="115" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">user_role</text>
+    <line x1="0" y1="32" x2="230" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">user_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">role_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="112" font-size="12" fill="#0f172a">laboratory_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- roles -->
+  <g transform="translate(180, 470)">
+    <rect width="200" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L194,0 Q200,0 200,6 L200,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="100" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">roles</text>
+    <line x1="0" y1="32" x2="200" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">description TEXT</text>
+  </g>
+
+  <!-- role_permission -->
+  <g transform="translate(180, 650)">
+    <rect width="200" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L194,0 Q200,0 200,6 L200,32 L0,32 Z" fill="#64748b"/>
+    <text x="100" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">role_permission</text>
+    <line x1="0" y1="32" x2="200" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">role_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">permission_id UUID  <tspan fill="#b45309" font-weight="bold">FK</tspan></text>
+  </g>
+
+  <!-- permissions -->
+  <g transform="translate(460, 650)">
+    <rect width="200" height="110" rx="6" fill="white" stroke="#334155"/>
+    <path d="M0,6 Q0,0 6,0 L194,0 Q200,0 200,6 L200,32 L0,32 Z" fill="#1e3a8a"/>
+    <text x="100" y="21" text-anchor="middle" fill="white" font-size="13" font-weight="bold">permissions</text>
+    <line x1="0" y1="32" x2="200" y2="32" stroke="#334155"/>
+    <text x="12" y="52" font-size="12" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan> UUID  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="12" y="72" font-size="12" fill="#0f172a">name TEXT</text>
+    <text x="12" y="92" font-size="12" fill="#0f172a">description TEXT</text>
+  </g>
+
+  <!-- projects (ghost) -->
+  <g transform="translate(1210, 470)">
+    <rect width="130" height="70" rx="6" fill="white" stroke="#334155" stroke-dasharray="4,3"/>
+    <path d="M0,6 Q0,0 6,0 L124,0 Q130,0 130,6 L130,30 L0,30 Z" fill="#94a3b8"/>
+    <text x="65" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">projects</text>
+    <line x1="0" y1="30" x2="130" y2="30" stroke="#334155"/>
+    <text x="10" y="50" font-size="11" fill="#0f172a"><tspan font-weight="bold" text-decoration="underline">id</tspan>  <tspan fill="#047857" font-weight="bold">PK</tspan></text>
+    <text x="10" y="64" font-size="10" fill="#64748b">(see diagram 2)</text>
+  </g>
+
+  <!-- CONNECTORS hierarchy chain -->
+  <path d="M270,145 L330,145" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+  <path d="M620,145 L560,145" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+  <path d="M830,145 L890,145" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+  <path d="M1160,145 L1110,145" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- laboratories → laboratory_user -->
+  <path d="M1240,200 C 1240,260 1090,260 1090,300" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- laboratories → laboratory_project -->
+  <path d="M1260,200 C 1260,260 1315,260 1315,300" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- laboratory_user → users -->
+  <path d="M1090,410 C 1090,440 870,440 870,470" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- laboratory_project → projects (external) -->
+  <path d="M1315,410 C 1315,440 1275,450 1275,470" stroke="#334155" stroke-width="1.2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- users → user_role -->
+  <path d="M760,525 L690,525" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- roles → user_role -->
+  <path d="M380,525 L460,525" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- roles → role_permission -->
+  <path d="M280,580 L280,650" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- permissions → role_permission -->
+  <path d="M460,705 L380,705" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- laboratories → user_role.laboratory_id -->
+  <path d="M1240,200 C 1240,430 575,430 575,470" stroke="#334155" stroke-width="1.2" stroke-dasharray="2,3" fill="none" marker-end="url(#arrow4)"/>
+
+  <!-- Legend -->
+  <g transform="translate(60, 790)">
+    <rect width="1220" height="60" rx="4" fill="white" stroke="#cbd5e1"/>
+    <rect x="14" y="14" width="14" height="14" fill="#1e3a8a"/>
+    <text x="34" y="26" font-size="12" fill="#0f172a">Relational entity</text>
+    <rect x="150" y="14" width="14" height="14" fill="#64748b"/>
+    <text x="170" y="26" font-size="12" fill="#0f172a">Junction (M..N) table</text>
+    <rect x="320" y="14" width="14" height="14" fill="#94a3b8"/>
+    <text x="340" y="26" font-size="12" fill="#0f172a">External entity (other diagram)</text>
+    <line x1="540" y1="21" x2="580" y2="21" stroke="#334155" stroke-width="1.2" stroke-dasharray="5,3"/>
+    <text x="588" y="26" font-size="12" fill="#0f172a">cross-diagram FK</text>
+    <text x="14" y="48" font-size="11" fill="#64748b">Organisations contain departments, which contain laboratories; labs hold users and own projects. A user's role is scoped to a laboratory through user_role.</text>
+  </g>
+</svg>

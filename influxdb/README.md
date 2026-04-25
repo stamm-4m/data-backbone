@@ -286,6 +286,3 @@ from(bucket: "stamm_predictions")
 This InfluxDB 2.7 stack provides a secure, consistent, and fully documented database backend for the STAMM.  
 Buckets, retention policies, and tokens are automatically provisioned, and the unified data model ensures compatibility between all STAMM components — data ingestion, Airflow orchestration, and dashboards.
 
-### 📬 Contact
-
-For questions, contact Alexander Astudillo at jairo.astudillo-lagos@inrae.fr
