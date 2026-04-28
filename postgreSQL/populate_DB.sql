@@ -108,6 +108,45 @@ INSERT INTO public.department_laboratory (id, department_id, laboratory_id) VALU
 INSERT INTO public.projects (id, name, description, created_at, stamm_modules_id, project_id) VALUES ('56d5fec2-b1bb-442d-99b1-b1aba59206cf', 'IndPenSim', 'The dataset used in this work corresponds to a series of experiments that were subsequently utilized to produce a simulation of industrial- scale penicillin fermentation processes (Paul and Thomas, 1996) which describes all the component balances relating to the process variables (Goldrick et al., 2015, 2019). The dataset generated from the industrial-scale penicillin fermentation (IndPenSim) includes 100 batches with each dataset comprising 2238 variables of which 39 variables correspond to process variables (manual and automatic control and online and offline measurements) and the remaining 2199 spond to Raman spectra. Per batch sensors recorded data every 12 min with the average batch length being approximately 230 h. Out of the 100 batches, the first 90 batches were operated under “normal” conditions using three different control strategies: (I) controlled by a recipe driven approach; (II) controlled by an operator and (III) controlled by an Advanced Process Control (APC). The last 10 batches contains faults, resulting in process deviations (Goldrick et al., 2019).', '2026-03-26 00:07:38.933245', NULL, 'P0001');
 INSERT INTO public.projects (id, name, description, created_at, stamm_modules_id, project_id) VALUES ('4b6b2911-bddd-4f02-b7f3-64920350e975', 'Bioindustry_E.Coli', 'Soft-sensing project for recombinant nanobody production in Escherichia coli (strains WK6: CH10-12 and NbF12-10), using experimental data from 7 fed-batch runs carried out in 5 L bioreactors (Sartorius) with 2 L working volume. Online variables were monitored with MFCS BioPAT (sampling every 5 s) and off-gas was analyzed with an INNOVA 1313 gas analyzer (every 5 min). Offline biomass measurements are used as ground-truth to train/validate soft sensors. For the first stage of this project, we focus only on biomass estimation using 10 online variables (temperature, pH, pO2, pressure, agitation, glucose feed setup, substrate weight, base weight, ACIT, O2 Gas out). Data source: IBISBA Knowledge Hub dataset (see ''data_sources'').', '2026-03-26 00:07:38.933245', NULL, 'P0002');
 
+-- TOC entry 4082 (class 0 OID 20052)
+-- Dependencies: 316
+-- Data for Name: experiments; Type: TABLE DATA; Schema: public; Owner: stamm
+INSERT INTO public.experiments (
+	id,
+	project_id,
+	name,
+	description,
+	initial_conditions,
+	set_points,
+	start_time,
+	end_time,
+	created_at
+) VALUES
+(
+	uuid_generate_v4(),
+	'56d5fec2-b1bb-442d-99b1-b1aba59206cf', 
+	'Simulación de fermentación láctica',
+	'Experimento para simular la fermentación láctica bajo condiciones controladas de temperatura y pH.',
+	'{"temperature": 37, "ph": 6.5, "volume_l": 2.0}',
+	'{"temperature": {"target": 37, "tolerance": 0.5}, "ph": {"target": 6.5, "tolerance": 0.1}}',
+	'2026-04-28T08:00:00+00',
+	'2026-04-28T20:00:00+00',
+	now()
+),
+(
+	uuid_generate_v4(),
+	'4b6b2911-bddd-4f02-b7f3-64920350e975', 
+	'Prueba de crecimiento bacteriano',
+	'Evaluación del crecimiento de E. coli en medio LB con diferentes concentraciones de glucosa.',
+	'{"temperature": 30, "ph": 7.0, "glucose_g_l": 5}',
+	'{"temperature": {"target": 30}, "glucose_g_l": {"target": 5, "range": [2, 10]}}',
+	'2026-04-27T09:00:00+00',
+	'2026-04-27T17:00:00+00',
+	now()
+);
+
+
+
 -- New roles added 2026-04-24
 INSERT INTO public.roles (id, name, description) VALUES ('11111111-1111-1111-1111-111111111111', 'super_admin', 'Super administrator with all permissions');
 INSERT INTO public.roles (id, name, description) VALUES ('22222222-2222-2222-2222-222222222222', 'admin', 'Administrator with management permissions');
@@ -318,8 +357,6 @@ INSERT INTO public.refresh_tokens (id, user_id, token, expires_at, revoked) VALU
 INSERT INTO public.refresh_tokens (id, user_id, token, expires_at, revoked) VALUES ('19e4648f-bad9-4763-b6de-b485931e422f', '424add51-e989-4af5-86bd-75a2cb461274', 'Q_OLafYBn8eNiaQHx_rP5HCwSsUYdtUBJvHl5aiLiOJ2xoTwAyXcWsGqlxFXOA-JitDdeaiTDWplXv2_zgcwkw', '2026-04-17 01:59:06.712984', false);
 INSERT INTO public.refresh_tokens (id, user_id, token, expires_at, revoked) VALUES ('919c65fe-1dd8-4443-a4cf-f84e619a165c', '424add51-e989-4af5-86bd-75a2cb461274', 'gJjoyRJsHMOt01nIuwgHVI7vFB5wfmq2fBH_T5nxC4cuVL7R7aMGlYc-JnBKKD3Nihj3refQjyElWgiXy_J-Iw', '2026-04-17 02:45:11.70924', false);
 
---
--- PostgreSQL database dump complete
 --
 
 -- ...removed pg_dump artifact...
