@@ -125,8 +125,8 @@ INSERT INTO public.experiments (
 (
 	uuid_generate_v4(),
 	'56d5fec2-b1bb-442d-99b1-b1aba59206cf', 
-	'Simulación de fermentación láctica',
-	'Experimento para simular la fermentación láctica bajo condiciones controladas de temperatura y pH.',
+	'Lactic fermentation simulation',
+	'Experiment to simulate lactic fermentation under controlled temperature and pH conditions.',
 	'{"temperature": 37, "ph": 6.5, "volume_l": 2.0}',
 	'{"temperature": {"target": 37, "tolerance": 0.5}, "ph": {"target": 6.5, "tolerance": 0.1}}',
 	'2026-04-28T08:00:00+00',
@@ -136,8 +136,8 @@ INSERT INTO public.experiments (
 (
 	uuid_generate_v4(),
 	'4b6b2911-bddd-4f02-b7f3-64920350e975', 
-	'Prueba de crecimiento bacteriano',
-	'Evaluación del crecimiento de E. coli en medio LB con diferentes concentraciones de glucosa.',
+	'Test experiment for E. coli growth in LB medium with glucose',
+	'Evaluation of E. coli growth in LB medium supplemented with glucose under controlled conditions of temperature and pH.',
 	'{"temperature": 30, "ph": 7.0, "glucose_g_l": 5}',
 	'{"temperature": {"target": 30}, "glucose_g_l": {"target": 5, "range": [2, 10]}}',
 	'2026-04-27T09:00:00+00',
